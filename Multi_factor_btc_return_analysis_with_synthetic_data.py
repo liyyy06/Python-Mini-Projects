@@ -62,3 +62,9 @@ sse = np.sum((y-predict)**2)
 ssr = sst - sse
 print(f"\nExplained variation: {(ssr/sst)*100:.4f}%")
 print(f"Unexplained variation: {(sse/sst)*100:.4f}%")
+
+r_squared = ssr/sst
+n = len(y)
+k = 4
+adjusted_r = 1 - (1-r_squared) * ((n-1)/(n-k-1))
+print(f"Adjusted R-squared: {adjusted_r}")
