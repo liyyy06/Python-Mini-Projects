@@ -64,3 +64,13 @@ n = len(y)
 k = 3
 adjusted_r = 1 - (1-r_squared)*((n-1)/(n-k-1))
 print(f"Adjusted R-squared: {adjusted_r:.4f}")
+
+print("\nVariables correlation")
+x_corr = np.column_stack([asset_return[1], asset_return[2], asset_return[3]])
+correlation_var = np.corrcoef(x_corr, rowvar=False)
+variables = np.array(["ETH", "SPY", "Gold"])
+
+for i in range(len(variables)):
+    for j in range(1+i, len(variables)):
+        correlation = correlation_var[i,j]
+        print(f"{variables[i]} VS {variables[j]}: {correlation:.4f}")
