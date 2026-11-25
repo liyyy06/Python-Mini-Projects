@@ -74,3 +74,51 @@ for i in range(len(variables)):
     for j in range(1+i, len(variables)):
         correlation = correlation_var[i,j]
         print(f"{variables[i]} VS {variables[j]}: {correlation:.4f}")
+
+print("\nVariance inflation factor")
+gold_spy_matrix = np.column_stack([np.ones(len(y)), asset_return[2,:], asset_return[3,:]])
+eth_spy_matrix = np.column_stack([np.ones(len(y)), asset_return[1,:], asset_return[3,:]])
+eth_gold_matrix = np.column_stack([np.ones(len(y)), asset_return[1,:], asset_return[2,:]])
+eth_return = asset_return[1,:]
+gold_return = asset_return[2,:]
+spy_return = asset_return[3,:]
+
+gold_spy = np.linalg.lstsq(gold_spy_matrix, eth_return, rcond=None)[0]
+print("Estimated beta")
+print("Benchmark = ETH")
+print(f"Gold: {gold_spy[1]:.4f}")
+print(f"SPY: {gold_spy[2]:.4f}")
+eth_mean = np.mean(eth_return)
+eth_predict = gold_spy_matrix @ gold_spy
+sst = np.sum((eth_return-eth_mean)**2)
+sse = np.sum((eth_return-eth_predict)**2)
+r_eth = 1 - (sse/sst)
+print(f"R-squared: {r_eth:.4f}")
+vif_eth = 1/(1-r_eth)
+print("VIF: ", vif_eth)
+
+eth_spy = np.linalg.lstsq(eth_spy_matrix, gold_return, rcond=None)[0]
+print("\nBenchmark = Gold")
+print(f"ETH: {eth_spy[1]:.4f}")
+print(f"SPY: {eth_spy[2]:.4f}")
+gold_mean = np.mean(gold_return)
+gold_predict = eth_spy_matrix @ eth_spy
+sst = np.sum((gold_return-gold_mean)**2)
+sse = np.sum((gold_return-gold_predict)**2)
+r_gold = 1 - (sse/sst)
+print(f"R-squared: {r_gold:.4f}")
+vif_gold = 1/(1-r_gold)
+print("VIF: ", vif_gold)
+
+eth_gold = np.linalg.lstsq(eth_gold_matrix, spy_return, rcond=None)[0]
+print("\nBenchmark = SPY")
+print(f"Gold: {eth_gold[1]:.4f}")
+print(f"SPY: {eth_gold[2]:.4f}")
+spy_mean = np.mean(spy_return)
+spy_predict = eth_gold_matrix @ eth_gold
+sst = np.sum((spy_return-spy_mean)**2)
+sse = np.sum((spy_return-spy_predict)**2)
+r_spy = 1 - (sse/sst)
+print(f"R-squared: {r_spy:.4f}")
+vif_spy = 1/(1-r_spy)
+print("VIF: ", vif_spy)
