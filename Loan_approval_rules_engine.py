@@ -19,7 +19,7 @@ if ready == "yes":
                 monthly_income = float(input("Please input your monthly income : "))
         except ValueError:
             print("Input harus berupa angka!")
-    input("Tekan enter untuk lanjut")
+    input("Press enter to continue")
 
     while True:
         try:
@@ -29,9 +29,9 @@ if ready == "yes":
             while float(monthly_debt) < 0:
                 monthly_debt = float(input("Please input your monthly debt: "))
         except ValueError:
-            print("Input harus berupa angka!")
+            print("Input should be a number!")
 
-    input("Tekan enter untuk lanjut")
+    input("Press enter to continue")
 
     while True:
         try:
@@ -41,7 +41,7 @@ if ready == "yes":
             while float(loan) <= 0 :
                 loan = float(input("Enter loan: "))
         except ValueError:
-            print("Input harus berupa angka!")
+            print("Input should be a number!")
 
     debt_ratio = monthly_debt / monthly_income * 100 
     if debt_ratio > 40 and loan > (12*monthly_income):
